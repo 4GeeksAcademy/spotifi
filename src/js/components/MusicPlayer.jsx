@@ -9,18 +9,18 @@ export default function MusicPlayer() {
   useEffect(() => {
     const fetchSongs = async () => {
       try {
-       
-        const response = await fetch('https://playground.4geeks.com/sound/songs'); 
 
-       
-        const contentType = response.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
-          throw new Error("La respuesta no es un JSON válido");
+        const response = await fetch('https://playground.4geeks.com/sound/songs');
+
+
+        if (!response.ok) {
+          // una respuesta no exitosa, retorna un error si el status es distinto de 200
+          throw new Error(`Error en la solicitud: ${response.statusText}`);
         }
 
         const data = await response.json();
 
-       
+
         console.log('Datos de la API:', data);
 
         const formattedSongs = data.songs.map((song) => ({
@@ -36,7 +36,7 @@ export default function MusicPlayer() {
     };
 
     fetchSongs();
-  }, []); 
+  }, []);
 
   const playSong = (index) => {
     setCurrentIndex(index);
